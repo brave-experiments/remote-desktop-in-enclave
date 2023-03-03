@@ -7,9 +7,10 @@ all: $(enclave_image)
 
 .PHONY: submodule
 submodule:
+	git submodule init
 	git submodule update
 
-$(nitriding): submodule nitriding/*.go nitriding/cmd/*.go
+$(nitriding): submodule
 	make -C nitriding/cmd/ nitriding
 
 .PHONY: docker_image
