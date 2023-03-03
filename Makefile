@@ -5,8 +5,11 @@ docker_tag = rdesktop:latest
 .PHONY: all
 all: $(enclave_image)
 
-$(nitriding): nitriding/* nitriding/cmd/*
+.PHONY: submodule
+submodule:
 	git submodule update
+
+$(nitriding): submodule nitriding/*.go nitriding/cmd/*.go
 	make -C nitriding/cmd/ nitriding
 
 .PHONY: docker_image
@@ -19,4 +22,4 @@ $(enclave_image): docker_image Dockerfile build-eif.sh
 .PHONY: clean
 clean:
 	rm -f $(nitriding) $(enclave_image)
-	docker image rm $(docker_tag)
+	-docker image rm $(docker_tag)
